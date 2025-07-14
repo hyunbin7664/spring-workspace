@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+           http://www.springframework.org/schema/beans 
+           https://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/context 
+           https://www.springframework.org/schema/context/spring-context.xsd">
+           
+       <!--
+			<bean> 태그
+				스프링 컨테이너가 생성하고 관리할 객체를 지정한다.
+			<property> 태그
+				Setter 의존성 주입을 설정하는 태그다.
+				name 속성: 의존성 주입을 받는 멤버변수명을 지정한다.
+						(실제로는 setter 메소드 이름이다.)
+				ref 속성: 의존성 주입에 사용되는 객체의 빈 아이디를 지정한다.
+			<constructor-arg> 태그
+				생성자 의존성 주입을 설정하는 태그다.
+				name 속성: 생성자 메소드의 매개변수 이름을 지정한다.
+				ref 속성: 의존성 주입에 사용되는 객체의 빈 아이디를 지정한다.
+	   -->
+       <bean id="userRepo" 
+       	class="com.example.repository.MySQLUserRepository">
+       </bean>
+       <bean id="orderRepo" 
+       	class="com.example.repository.OracleOrderRepository">
+       </bean>
+       <bean id="userService" 
+       	class="com.example.service.UserService">
+       	<property name="userRepository" ref="userRepo" />
+       </bean>
+       <bean id="orderService" 
+       	class="com.example.service.OrderService">
+       	<constructor-arg name="userRepository" ref="userRepo" />
+       	<constructor-arg name="orderRepository" ref="orderRepo" />
+       </bean>
+</beans>

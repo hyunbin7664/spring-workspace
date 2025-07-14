@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.TodoMapper">
+
+	<!--
+		void insertTodo(Todo todo);
+	-->
+	<insert id="insertTodo" parameterType="Todo">
+		insert int app_todos
+		(todo_no, user_no, category_no, content, due_date)
+		values
+		(app_todos_seq.nextval, #{userNo}, #{categoryNo}, #{content}, #{dueDate})
+	</insert>
+
+	<!--
+		Todo getTodo(int todoNo);
+	-->
+	<select id="getTodo" resultType="Todo">
+		select 
+			t.todo_no todoNo, 
+			t.user_no userNo, 
+			t.cat_no catNo, 
+			t.title, 
+			t.content, 
+			t.due_date dueDate, 
+			t.complete_date completeDate, 
+			t.status, 
+			t.created_date createdDate, 
+			t.updated_date updatedDate, 
+			c.name "category.name", 
+			u.username "user.username", 
+			u.name "user.name"
+		from 
+			app_todos t, app_categories c, app_users u
+		where 
+			t.cat_no = c.cat_no
+			and t.user_no = u.user_no
+			and t.todo_no = #{todoNo}
+	</select>
+
+	<!--
+		List<Todo> getAllTodos();
+	-->
+	<select id="getAllTodos" resultType="Todo">
+		select 
+			t.todo_no todoNo, 
+			t.user_no userNo, 
+			t.cat_no catNo, 
+			t.title, 
+			t.content, 
+			t.due_date dueDate, 
+			t.complete_date completeDate, 
+			t.status, 
+			t.created_date createdDate, 
+			c.name "category.name", 
+			u.username "user.username", 
+			u.name "user.name"
+		from 
+			app_todos t, app_categories c, app_users u
+		where 
+			t.cat_no = c.cat_no
+			and t.user_no = u.user_no
+		order by 
+			t.todo_no asc
+	</select>
+	
+</mapper>

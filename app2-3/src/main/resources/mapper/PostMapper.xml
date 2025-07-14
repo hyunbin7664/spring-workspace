@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.PostMapper">
+	
+	<!--
+		List<Post> getPosts();
+	-->
+	<select id="getPosts" resultType="Post">
+		select
+			A.post_no postNo
+			, A.user_no userNo
+			, B.name "user.name"
+			, A.title
+			, A.created_date createdDate
+		from 
+			app_posts A, app_users B
+		where 
+			A.user_no = B.user_no
+			and A.deleted = 'N'
+		order by
+			A.post_no desc
+	</select>
+	
+	<!--
+		void insertPost(Post post);
+	-->
+	<insert id="insertPost" parameterType="Post">
+		insert into app_posts
+		(
+		post_no
+		, user_no
+		, title
+		, content
+		<if test="filename != null">
+		, filename
+		</if>
+		)
+		values
+		(
+			app_posts_seq.nextval
+			, #{userNo}
+			, #{title}
+			, #{content}
+			<if test="filename != null">
+			, #{filename}
+			</if>
+		)
+	</insert>
+	
+	<!--
+		Post getPostByPostNo(int postNo);
+	-->
+	<select id="getPostByPostNo" resultType="Post">
+		select 
+			A.post_no postNo
+			, A.user_no userNo
+			, B.name "user.name"
+			, A.content
+			, A.filename
+			, A.deleted
+			, A.created_date createdDate
+			, A.updated_date updatedDate
+		from 
+			app_posts A, app_users B
+		where 
+			A.user_no = B.user_no
+			and A.post_no = #{postNo}
+	</select>
+	
+	<!--
+		void updatePost(Post post);
+	-->
+
+</mapper>

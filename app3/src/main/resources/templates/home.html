@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<!-- 
+	layout:decorate="~{부모 레이아웃}"
+		이 화면에서 사용할 부모 레이아읏을 지정한다 
+		
+		layout:decorate="~{/layout/base}"
+			layout/base.html을 부모 레이아웃으로 지정한다 
+	
+	th:with="name=value"
+		부모 레이아웃과 공유할 값을 설정한다
+ -->
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{/layout/base}" th:with="menu='home'">
+<div layout:fragment="content" class="container mt-4">
+	<div class="jumbotron mb-3">
+		<h1 class="display-4">샘플 애플리케이션 프로젝트</h1>
+		<p class="lead">
+			샘플 애플리케이션은 
+			spring boot 3.3.x, spring security, spring web,
+			mybatis를 활용한 프로젝트다.
+		</p>
+		<p>app3</p>
+
+		<hr class="my-4">
+
+		<a href="/register" class="btn btn-primary btn-lg">회원가입</a>
+		<a href="/login" class="btn btn-secondary btn-lg">로그인</a>
+	</div>
+</div>	
+</html>

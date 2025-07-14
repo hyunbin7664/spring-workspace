@@ -1,0 +1,82 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.example</groupId>
+  <artifactId>spring-jdbc</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  
+  <properties>
+  	<maven.compiler.source>21</maven.compiler.source>
+    <maven.compiler.target>21</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+  
+  <!--
+	프로젝트가 의존하는 라이브러리 등록
+  -->
+  <dependencies>
+  	<!-- spring-context 라이브러리 의존성 추가 -->
+  	<dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>5.3.30</version>
+    </dependency>
+    
+    <!--
+		spring-jdbc 라이브러리 의존성 추가
+		JDBC 기술을 사용한 데이터베이스 연동 지원한다.
+		
+	-->
+    <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <version>5.3.30</version>
+    </dependency>
+    
+    <!--
+		oracle jdbc 드라이버 라이브러리 의존성 추가
+	-->
+    <dependency>
+           <groupId>com.oracle.database.jdbc</groupId>
+           <artifactId>ojdbc11</artifactId>
+           <version>21.9.0.0</version>
+    </dependency>
+    
+    <!--
+		데이터베이스 커넥션 풀을 지원하는 라이브러리 의존성 추가
+	-->
+    <dependency>
+        <groupId>commons-dbcp</groupId>
+        <artifactId>commons-dbcp</artifactId>
+        <version>1.4</version>
+    </dependency>
+        
+        
+    <!--
+		org.aspectj의 aspectjweaver, aspectjrt
+		AOP 전용 라이브러리 의존성 추가
+	-->
+    <dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjweaver</artifactId>
+			<version>1.9.21</version>
+	</dependency>
+	<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjrt</artifactId>
+            <version>1.9.21</version>
+	</dependency>
+    
+    <!-- 로그 출력을 지원하는 의존성 추가-->
+        <dependency>
+           <groupId>org.slf4j</groupId>
+           <artifactId>slf4j-api</artifactId>
+           <version>2.0.12</version>
+       </dependency>
+       <dependency>
+           <groupId>ch.qos.logback</groupId>
+           <artifactId>logback-classic</artifactId>
+           <version>1.4.14</version>
+       </dependency>
+  </dependencies>
+  
+</project>

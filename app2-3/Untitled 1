@@ -1,0 +1,51 @@
+	
+	
+	
+	UserDetails와 UserDetailsService 인터페이스
+	
+	UserDetails
+	- 사용자 인증에 필요한 정보를 추상화한 인터페이스다.
+	- 데이터베이스에 조회한 사용자정보를 제공할 떄 이 인터페이스를 구현한 객체로 제공해야 된다.
+	- 주요 메소드
+		String getUsername()
+			- username을 반환한다.
+		String getPassword()
+			- 비밀번호를 반환한다.
+		Collection <GrantedAuthority> getAuthorities()
+			- 허가된접근권한 목록을 반환한다.
+		default boolean isAccountNonExpired()
+			- 계정 만료되지 않음 여부를 반환한다.
+		default boolean isAccountNonLocked()
+			- 계정 잠금되지 않음 여부를 반환한다.
+		default boolean isCredentialNoExpired()
+			- 비밀번호 만료되지 않음 여부를 반환한다.
+		default boolean isEnabled()
+			- 계정 활성화 여부를 반환한다.
+		* default 메소드는 전부 true를 반환하도록 기본 구현되어 있다.
+		
+	UserDetailsService
+	- 데이터베이스에 사용자 정보를 조회하는 기능을 추상화한 인터페이스다.
+	- 이 인터페이스가 제공하는 메소드를 재정의해서 실제 데이터베이스를 사용자정보를 조회하고, 반환하는 기능을 구현한다.
+	- 사용자 인증과정에서 이 인터페이스를 구현한 객체가 제공하는 기능을 실행해서
+	  인증에 필요한 사용자정보(UserDetails 구현객체)를 제공받는다.
+	- 주요 메소드
+		UserDetails loadUserByUsername(String username)
+			- username을 전달받아서 인증에 필요한 사용자 정보를 반환한다.
+			- 사용자정보가 존재하지 않으면 UsernameNotFoundException을 던진다.
+	
+	바이트스트림
+		- 1byte씩 읽고 쓴다.
+		- 그림, 영상, 압축파일, 다양한 바이너리 파일
+		xxxInputStream
+		xxxOutputStream
+	캐릭터(문자)스트림
+		- 1글자씩 읽고 쓴다.
+		- 텍스트 전용 스트림
+		xxxReader
+		xxxWriter
+		
+	
+	
+	
+	
+	

@@ -1,0 +1,23 @@
+	
+	
+	
+	스프링의 데이터베이스 엑세스 작업
+	- 라이브러리 의존성 추가
+	- 데이터베이스 연결 정보 설정 - Connection Pool 객체 등록
+	- 데이터베이스 엑세스 기술에 맞게 DAO 구현하기
+	- 업무로직 구현을 담당하는 Service 구현하기
+	- 클라이언트의 HTTP 요청을 처리하는 Controller 구현하기
+	
+	JdbcTemplate API
+	
+	int update(String sql)
+	int update(String sql, Object... values)
+	- INSERT, UPDATE, DELETE SQL 실행하는 메소드
+	
+	T queryForObject(String sql, RowMapper<T> rowMapper)
+	T queryForObject(String sql, RowMapper<T> rowMapper, Object... values)
+	- 조회 결과가 1건 조회되는 SQL 실행하는 메소드
+	
+	List<T> query(String sql, RowMapper<T> rowMapper)
+	List<T> query(String sql, RowMapper<T> rowMapper, Object... values)
+	- 조회 결과가 1건 이상 조회되는 SQL 실행하는 메소드

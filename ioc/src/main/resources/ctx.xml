@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+           http://www.springframework.org/schema/beans 
+           https://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/context 
+           https://www.springframework.org/schema/context/spring-context.xsd">
+           
+       <!--
+			<bean> 태그
+				- 스프링 컨테이너가 생성할 객체를 지정하는 태그다.
+				- id 속성 : 스프링 컨테이너 내부에서 이 객체를 식별하는 이름이다.
+				- class 속성 : 스프링 컨테이너가 생성할 객체의 전체이름이다.
+		
+	   -->
+       <bean id="userService" class="com.example.service.UserServiceImpl" />
+</beans>

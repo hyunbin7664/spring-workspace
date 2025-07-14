@@ -1,0 +1,236 @@
+	
+	
+	프로젝트 작업
+	
+	new -> project -> Spring Starter Project
+	
+	
+	------------------------------------------------
+	
+	게시글 관련 REST API 설계
+
+	전체 게시글 조회
+		요청 방식
+			GET
+		요청 URI
+			/api/posts
+		요청 데이터
+			없음
+		응답 데이터
+			[
+			 {postNo:1, userNo:1, title:"연습", createdDate:"2025-06-01"},
+	                 {postNo:1, userNo:1, title:"연습", createdDate:"2025-06-01"}
+			]
+		
+		@GetMapping("/api/posts")
+		public ResponseEntity<List<Post>> getPosts( ) { ... } 
+	
+		요청 메세지
+		GET /api/posts
+	
+	
+		응답 메세지
+		HTTP/1.1 200 OK 
+	
+		[
+		  {postNo:1, userNo:1, title:"연습", createdDate:"2025-06-01"},
+	          {postNo:1, userNo:1, title:"연습", createdDate:"2025-06-01"}
+		]
+	
+	
+	특정 게시글 조회
+		요청 방식
+			GET
+		요청 URI
+			/api/posts/1
+		요청 데이터
+			없음
+		응답 데이터
+			{postNo:1, userNo:1, title:"연습", createdDate:"2025-06-01"}
+	
+		@GetMapping("/api/posts/{postNo}")
+		public ResponseEntity<Post> getPost(@PathVariable("postNo") int postNo) { ... } 
+	
+		요청 메세지
+		GET /api/posts/1
+	
+	
+		응답 메세지
+		HTTP/1.1 200 OK 
+	
+		{postNo:1, userNo:1, title:"연습", createdDate:"2025-06-01"}
+	
+	신규 게시글 추가
+		요청 방식
+			POST
+		요청 URI
+			/api/posts
+		요청 데이터
+			{"title":"연습", "content":"연습입니다."}
+		응답 데이터
+			없음
+		
+		@PostMapping("/api/posts")
+		public ResponseEntity<Void> createPost(@RequestBody PostCreateRequest request) { ...}
+	
+		요청 메세지
+		POST /api/posts
+	
+		{"title":"연습", "content":"연습입니다."}
+	
+	
+		응답 메세지
+		HTTP/1.1 201 Created 
+	
+	특정 게시글 삭제
+		요청 방식
+			DELETE
+		요청 URI
+			/api/posts/1
+		요청 데이터
+			없음
+		응답 데이터
+			없음
+	
+		@DeleteMapping("/api/posts/{postNo}")
+		public ResponseEntity<Void> deletePost(@PathVariable("postNo") int postNo) { ... } 
+	
+		요청 메세지
+		DELETE /api/posts/1
+	
+	
+		응답 메세지
+		HTTP/1.1 204 No Content 
+	
+	
+	특정 게시글 수정
+		요청 방식
+			PUT
+		요청 URI
+			/api/posts/1
+		요청 데이터
+			{"title":"연습", "content":"연습입니다."}
+		응답 데이터
+			없음
+	
+		@PutMapping("/api/posts/{postNo}")
+		public ResponseEntity<Void> updatePost(@PathVariable("postNo") int postNo,
+								        @RequestBody PostCreateRequest request) { ...}
+	
+	------------------------------------------------
+	회원가입 요청 처리
+		- 요청 URL
+			POST/signup
+		- 요청 데이터	
+			{
+				"username":"hong", 
+				"password":"1234", 
+				"nickname":"홍길동", 
+				"email":"hong@gmail.com"
+			}
+		- 응답 데이터
+			{
+				"id":1, 
+				"username":"홍길동", 
+				"email":"hong@gmail.com"
+			}
+		- 처리 내용
+			1. users 테이블에 사용자정보를 저장한다.
+			2. 사용자 정보가 저장되면 사용자 번호(id)가 자동으로 발행된다.
+			3. 응답으로 사용자번호, 아이디, 닉네임, 이메일을 보낸다.
+	
+	로그인 요청 처리
+		- 요청 URL
+			POST/login
+		- 요청 데이터
+			{
+				"username":"hong"
+				"password":"1234"
+			}
+		- 응답 데이터
+			{
+				"accessToken":"xxxxxxxx", 
+				"refreshToken":"xxxxxxxxx"
+			}
+		- 처리 내용
+			1. username과 password로 사용자 인증 작업을 수행한다.
+			2. 사용자 인증이 완료되면 accessToken과 refreshToken을 생성한다.
+			3. refreshToken은 RefreshToken 객체를 생성해서 refreshToken, 사용자번호, 만료시간을 담고 테이블에 저장시킨다.
+			4. refreshToken과 RefreshToken을 응답에 담아서 보낸다.
+		
+	엑세스 토큰 재발행하기
+		- 요청 URL
+			POST/refresh
+		- 요청 데이터
+			{
+				"refreshToken":"xxxx"
+			}
+		- 응답 데이터
+			{
+				"accessToken":"xxxx", 
+				"refreshToken":"yyyy"
+			}
+		- 처리 내용
+			1. refreshToken을 전달받아서 테이블에 저장된 리프레시 토큰정보(번호, 토큰, 사용자번호, 만료일자)를 조회한다.
+			2. refreshToken의 만료일자가 경과되지 않았다면 accessToken을 새로 발행한다.
+			3. refreshToken의 만료일자가 임박했다면 refreshToken도 새로 발행하고, 테이블에 저장시킨다.
+			4. accessToken과 refreshToken을 응답에 담아서 보낸다.
+	
+	JWT 인증 활용하기 - 신규 할일 등록하기
+	- 요청 URL
+		POST /api/todos
+	- 요청 헤더 정보
+		"Authorization":"Bearer accessTokennnnnn"
+	- 요청 데이터
+		{
+			"title":"주간회의", 
+			"description":"6월 마지막주 주간회의", 
+			"dueDate":"2-25-06-30"
+		}
+	- 응답 데이터
+		[
+			"id":1, 
+			"title":"주간회의", 
+			"description":"6월 마지막주 주간회의", 
+			"dueDate":"2025-06-30", 
+			"completed":false
+		]
+	- 처리 내용
+		- JWT 인증(JwtAuthenticationFilter 담당)
+			1. 요청메시지의 헤더정보에서 accessToken 정보 획득
+			2. accessToken의 유효성 검증
+			3. accessToken에서 사용자 정보(사용자번호, 보유권한) 추출
+			4. Authentication(UsernamePasswordAuthenticationToken)객체를 생성하고, 
+			   사용자 번호, 보유 권한 정보를 저장한다.
+			5. Authentication 객체를 SecurityContext에 저장한다.
+			6. 다음 단계의 필터로 요청을 전달한다.
+		- JWT 인가(Spring Security의 인가처리 Filter 담당)
+			1. AuthorizationFilter는 SecurityContext에서 Authentication객체를 조회한다.
+			2. AuthorizationFilter는 획득된 Authentication객체를 AuthorizationManager에게 전달학 인가작업을 위임한다.
+			3. AuthorizationManager는 요청한 리소스에 대한 인가작업을 수행한다.
+			4. 인가 허용되면 다음 단계의 필터로 요청을 전달한다.
+			   (최종적으로 클라이언트의 요청이 Spring MVC의 DispatcherServlet에게 전달된다.)
+			   인가가 허용되지 않으면 AccessDeninedException을 발생하고, AccessDeninedHandler가 실행된다.
+		- 할일 등록(TodoController 담당)
+			public ResponseEntity<?> createTodo(
+										@RequestBody AddTodoRequest request, 
+										@AuthenticationPrincipal long userId) {...}
+			1. @RequestBody 어노테이션은 요청메시지의 바디부에 담겨서 전달된 JSON 데이터를 AddTodoRequest 객체를 생성해서 담는다.
+			2. @AuthenticationPrincipal 어노테이션은 SecurityContext에 저장된 Authentication객체의 
+			   principal에 저장된 사용자번호를 가져와서 userId에 전달한다.
+				* 할일 등록에 필요한 신규 할일정보와 할일 등록을 요청한 사용자번호가 요청핸들러 메소드로 전달되었다.
+			3. 신규 할인정보와 사용자번호를 서비스에 전달해서 등록요청한다.
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

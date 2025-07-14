@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.TodoMapper">
+
+	<!-- 
+		List<Todo> getTodos()
+	 -->
+	<select id="getTodos" resultType="Todo">
+		select
+			A.todo_no		todoNo
+		  , C.name			"category.name"
+		  , A.title
+		  , A.due_date		dueDate
+		  , A.status
+		  , B.name          "user.name"
+		from
+			app_todos A, app_users B, app_categories C
+		where
+			A.user_no = B.user_no
+			and A.cat_no = C.cat_no
+		order by
+			A.todo_no desc
+	</select>
+	
+	<!-- 
+		Todo getTodoByNo(int todoNo);
+	 -->
+	<select id="getTodoByNo" resultType="Todo">
+		select
+	         A.todo_no      todoNo
+	        , A.cat_no        catNo
+	        , C.name         "category.name"
+	        , A.title
+	        , A.content
+	        , A.due_date      dueDate
+	        , A.complete_date   completeDate
+	        , A.status
+	        , A.user_no       userNo
+	        , B.name          "user.name"
+	        , A.created_date  createdDate
+	        , A.updated_date  updatedDate
+      from
+         	app_todos A, app_users B, app_categories C
+      where
+	         A.user_no = B.user_no
+	         and A.cat_no = C.cat_no
+	         and A.todo_no = #{todoNo}
+	</select>
+	
+	<!-- 
+		void insertTodo(Todo todo)
+	 -->
+	<insert id="insertTodo" parameterType="Todo">
+		insert into app_todos
+		(todo_no, user_no, cat_no, title, content, due_date)
+		values
+		(app_todos_seq.nextval, #{userNo}, #{catNo}, #{title}, #{content}, #{dueDate})
+	</insert>
+	
+	<!-- 
+		void updateTodo(Todo todo)
+	 -->
+	<update id="updateTodo" parameterType="Todo">
+		update app_todos
+		<set>
+			updated_date = sysdate
+			<if test="title != null">
+			  , title = #{title}
+			</if>
+			<if test="content != null">
+			  , content = #{content}			
+			</if>
+			<if test="dueDate != null">
+			  , due_date = #{dueDate}
+			</if>
+			<if test="status != null">
+			  , status = #{status}				
+			</if>
+			<if test="completeDate != null">
+			  , complete_date = #{completeDate}
+			</if>
+		</set>
+		where
+			todo_no = #{todoNo}
+	</update>
+	
+	<!-- 
+		void deleteTodo(int todoNo)
+	 -->
+	<delete id="deleteTodo">
+		delete from
+			app_todos
+		where
+			todo_no = #{todoNo}
+	</delete>
+	
+</mapper>
+
+
+
+
+
+
+

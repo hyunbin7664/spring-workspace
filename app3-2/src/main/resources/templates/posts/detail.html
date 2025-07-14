@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{/layout/base}" th:with="menu='detail'">
+<div layout:fragment="content" class="container mt-4">
+	<div class="row mb-3">
+		<div class="col-12">
+			<div class="card">
+				<div class="card-header">
+					<h3>게시글 상세 정보</h3>
+				</div>
+				<table class="table table-bordered">
+					<colgroup>
+						<col width="15%">
+						<col width="35%">
+						<col width="15%">
+						<col width="35%">
+					</colgroup>
+					<tbody>
+						<tr>
+							<th>번호</th>
+							<td>[[${post.postNo}]]</td>
+							<th>작성자</th>
+							<td th:text="${post.user.name}">홍길동</td>
+						</tr>
+						<tr>
+							<th>제목</th>
+							<td colspan="3" th:text="${post.title}">연습1</td>
+						</tr>
+						<tr>
+							<th>등록일</th>
+							<td th:text="${#dates.format(post.createdDate, 'yyyy년 M월 dd일')}">2025년 6월 15일 </td>
+							<th>수정일</th>
+							<td th:text="${#dates.format(post.updatedDate, 'yyyy년 M월 dd일')}">2025년 6월 15일 </td>
+						</tr>
+						<tr>
+							<th>첨부파일</th>
+							<td colspan="3">
+								<th:block th:if="${post.filename != null}" >
+									<span th:text="${post.originalFilename}">
+										sample.png
+									</span>
+									<a th:href="@{/posts/download(no=${post.postNo})}" class="btn btn-outline-primary btn-sm">다운로드</a>
+								</th:block>
+								<th:block th:unless="${post.filename != null}" >
+									없음
+								</th:block>
+							</td>
+						</tr>
+						<tr>
+							<th>내용</th>
+							<td colspan="3" th:text="${post.content}">내용입니다.</td>
+						</tr>
+					</tbody>
+				</table>
+				<div class="card-footer text-end">
+ 					<th:block sec:authorize="isAuthenticated()">
+	 					<th:block th:if="${post.userNo == #authentication.principal.user.userNo}">
+							<a th:href="@{/posts/update(postNo=${post.postNo})}" class="btn btn-warning">수정</a>
+							<a th:href="@{/posts/delete(postNo=${post.postNo})}" class="btn btn-danger">삭제</a>	
+						</th:block>
+					</th:block>
+					<a th:href="@{/posts/list}"class="btn btn-primary">목록</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="row mb-3">
+		<div class="col-12">
+			<div class="card">
+				<div class="card-header">
+					<h3>댓글 목록</h3>
+				</div>
+				<div class="card-body">
+					<form id="form-comment" class="mb-3">
+						<div class="mb-3">
+							<textarea rows="3" class="form-control" name="content"></textarea>
+						</div>
+						<button type="button" class="btn btn-primary" id="btn-add-comment">댓글 작성</button>
+					</form>
+					<!-- 댓글이 표시되는 곳 -->
+					<div id="box-comments"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+</div>	
+<th:block layout:fragment="script">
+	<th:block sec:authorize="isAuthenticated()">
+		<!-- 로그인된 사용자만 사용할 수 있는 스크립트 코드 -->
+		<script>
+			$("#btn-add-comment").click(function() {
+				$.ajax({
+					method: "post", 
+					url: "/api/comments", 
+					data: JSON.stringify({
+						postNo: [[${post.postNo}]], 
+						content: $("textarea[name='content']").val()
+					}), 
+					contentType:"application/json", 
+					dataType:"json", 
+					success: function(result) {
+						loadComments();
+						$("textarea[name='content']").val("")
+					}
+				});
+			});
+			
+			let userNo = [[${#authentication.principal.user.userNo}]];
+		</script>
+	</th:block>
+	<th:block sec:authorize="!isAuthenticated()">
+		<!-- 로그인하지 않았을 때 사용되는 스크립트 코드 -->
+		<script>
+			let userNo;
+		</script>
+	</th:block>
+		<!-- 로그인 여부와 상관없이 사용되는 스크립트 코드 -->
+		<script>
+			function loadComments() {
+				$.getJSON('/api/comments', 
+						{postNo:[[${post.postNo}]]}, 
+						function(result) {
+							let comments = result.data;
+							let htmlContents = "";
+							for (let c of comments) {
+								htmlContents += `
+									<div class="card mb-3">
+										<div class='card-body'>
+											<div class="d-flex justify-content-between">
+												<div>
+													<strong>${c.name}</strong>
+													<small class="text-muted">${c.createdDate}</small>
+												</div>
+												<button class="btn btn-danger btn-sm"
+														data-comment-no="${c.commentNo}">삭제</button>
+											</div>
+											<p class="card-text">${c.content}</p>
+										</div>
+									</div>
+								`
+							}
+							$("#box-comments").html(htmlContents)
+						})
+			
+			}
+			loadComments();
+		</script>
+</th:block>
+</html>

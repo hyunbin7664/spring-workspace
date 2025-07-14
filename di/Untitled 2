@@ -1,0 +1,20 @@
+	
+	
+	스프링 컨테이너
+	- Java Config, XML, Annotation 기반의 구성정보를 활용해서 객체 생성/조립(의존성 주입)을 수행할 수 있다.
+	- 클래스를 스캔해서 자동으로 스프링 컨테이너의 빈(객체)로 등록(생성)할 수 있다.
+		+ @Component 혹은 그 하위 어노테이션이 부착된 클래스
+		+ 종류
+			@Component					- 스프링 컨테이너의 자동 스캔대상 지정
+			@Repository					- 저장소와 관련된 기능 수행
+			@Service					- 비즈니스 로직을 수행
+			@Controller					- HTTP 요청을 처리
+			@RestController				- REST 방식의 HTTP 요청을 처리
+			@ControllerAdvice			- 컨트롤러 관련 공통기능 처리
+			@RestControllerAdvice		- Rest컨트롤러 관련 공통기능 처리
+			@Configuration				- 자바기반 설정정보 제공
+	- 자동 의존성 주입(Auto Wiring: 자동 빈 묶기)을 지원한다.
+		+ @Autowired
+		+ 멤버변수, setter메소드, 생성자, 매개변수 등에 부착할 수 있고,
+		  부착대상의 타입을 조사해서 해당 타입과 일치하는 객체를 찾아 자동으로 주입힌다.
+		  

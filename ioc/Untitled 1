@@ -1,0 +1,13 @@
+
+스프링 컨테이너를 제공하는 모듈(라이브러리)
+spring-beans.jar
+	- BeansFactory 및 구현 클래스 제공
+	- 객체 생성/조립 기본적인 기능만 제공한다.
+	
+spring-context.jar
+	- ApplicationContext 및 구현 클래스 제공
+	- 객체 생성/조립, AOP 지원, 국제화 등 더 다양한 기능을 제공한다.
+	
+spring-web.jar
+	- WebApplicationContext 및 구현 클래스 제공
+	- 웹 환경에 최적화된 스프링 컨테이너를 제공한다.
